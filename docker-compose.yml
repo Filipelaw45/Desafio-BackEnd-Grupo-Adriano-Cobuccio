@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: Postgres-DB
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - '${DB_PORT}:5432'
+    networks:
+      - cluster
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+networks:
+  cluster:
+    driver: bridge
