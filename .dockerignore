@@ -1,0 +1,27 @@
+# Dependências e artefatos locais
+node_modules
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+coverage
+dist
+.tmp
+.cache
+
+# VCS / IDE
+.git
+.gitignore
+.vscode
+.idea
+
+# Documentação
+*.md
+
+# Testes
+test
+**/*.spec.ts
+**/*.test.ts
+
+# Env
+.env
+.env.*

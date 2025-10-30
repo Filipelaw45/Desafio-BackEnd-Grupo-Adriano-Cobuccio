@@ -12,6 +12,31 @@ services:
       - cluster
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      dockerfile: Dockerfile
+    container_name: Api
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
+      - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN}
+    ports:
+      - '${PORT}:${PORT}'
+    networks:
+      - cluster
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "npm run migration:run && npm run start:prod"
 
 volumes:
   postgres_data:
